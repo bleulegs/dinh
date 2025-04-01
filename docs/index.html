@@ -64,13 +64,21 @@
             50% { transform: translateY(-20px) rotate(-5deg); }
             100% { transform: translateY(0) rotate(5deg); }
         }
+        .flash {
+            animation: flash 0.2s infinite alternate;
+        }
+        @keyframes flash {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
     </style>
 </head>
 <body>
-    <h1>WHY DID YOU LEAVE US, MISS DINH?! 😭😭</h1>
+    <h1 class="flash">WHY DID YOU LEAVE US, MISS DINH?! 😭😭</h1>
     <div class="gif-container">
         <img src="https://media.giphy.com/media/l0IylQoEK6Vh3OC00/giphy.gif" alt="Crying Kid">
     </div>
+    <marquee behavior="scroll" direction="left" style="font-size: 30px; color: yellow;">WE MISS YOUUUU 💔💔💔💔</marquee>
     <script>
         setInterval(() => {
             let popup = document.createElement("div");
@@ -97,12 +105,21 @@
                 "https://www.myinstants.com/media/sounds/vine-boom.mp3",
                 "https://www.myinstants.com/media/sounds/roblox-oof.mp3",
                 "https://www.myinstants.com/media/sounds/among-us.mp3",
-                "https://www.myinstants.com/media/sounds/fart.mp3"
+                "https://www.myinstants.com/media/sounds/fart.mp3",
+                "https://www.myinstants.com/media/sounds/mario-screaming.mp3",
+                "https://www.myinstants.com/media/sounds/windows-error.mp3"
             ];
             let audio = new Audio(sounds[Math.floor(Math.random() * sounds.length)]);
             audio.play();
         }
-        setInterval(playRandomSound, 1000);
+        setInterval(playRandomSound, 500);
+        
+        setInterval(() => {
+            document.body.style.background = "rgb(" +
+                Math.floor(Math.random() * 256) + "," +
+                Math.floor(Math.random() * 256) + "," +
+                Math.floor(Math.random() * 256) + ")";
+        }, 100);
     </script>
 </body>
 </html>
