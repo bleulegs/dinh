@@ -106,13 +106,18 @@
                 "https://www.myinstants.com/media/sounds/roblox-oof.mp3",
                 "https://www.myinstants.com/media/sounds/among-us.mp3",
                 "https://www.myinstants.com/media/sounds/fart.mp3",
-                "https://www.myinstants.com/media/sounds/mario-screaming.mp3",
-                "https://www.myinstants.com/media/sounds/windows-error.mp3"
+                "https://www.myinstants.com/media/sounds/windows-error.mp3",
+                "https://www.myinstants.com/media/sounds/naplan.mp3",
+                "https://www.myinstants.com/media/sounds/oh-my-god-bro-oh-hell-nah-man.mp3",
+                "https://www.myinstants.com/media/sounds/discord-call-sound.mp3",
+                "https://www.myinstants.com/media/sounds/emotional-damage-meme.mp3",
+                "https://www.myinstants.com/media/sounds/spongebob-squarepants-the-yellow-album-21-electric-zoo-audiotrimmer.mp3",
+                "https://www.myinstants.com/media/sounds/asian-gong-music.mp3"
             ];
             let audio = new Audio(sounds[Math.floor(Math.random() * sounds.length)]);
             audio.play();
         }
-        setInterval(playRandomSound, 500);
+        setInterval(playRandomSound, 3000);
         
         setInterval(() => {
             document.body.style.background = "rgb(" +
