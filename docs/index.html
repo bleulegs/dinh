@@ -3,128 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Why Did You Leave Us, Miss Dinh?!</title>
+    <title>Mrs. Dinh Tribute</title>
     <style>
         body {
-            background: black;
+            background-color: black;
             color: white;
-            font-family: Comic Sans MS, cursive;
             text-align: center;
-            overflow: hidden;
-            animation: spinBackground 1s infinite linear;
-        }
-        @keyframes spinBackground {
-            0% { background: black; }
-            25% { background: darkred; }
-            50% { background: darkblue; }
-            75% { background: purple; }
-            100% { background: black; }
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            padding: 20px;
         }
         h1 {
-            font-size: 50px;
-            animation: shake 0.2s infinite, rainbow 0.5s infinite alternate, explode 0.5s infinite;
+            font-size: 3em;
+            margin-top: 50px;
+            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
         }
-        @keyframes explode {
-            0% { transform: scale(1); }
-            50% { transform: scale(2); }
-            100% { transform: scale(1); }
+        .emoji-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
         }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
-        }
-        .gif-container {
+        .emoji {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: spin 2s infinite linear;
+            font-size: 50px;
+            animation: float 5s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(20px); }
+            100% { transform: translateY(0); }
+        }
+        .message-box {
+            margin: 50px auto;
+            width: 60%;
+            padding: 30px;
+            background: rgba(226, 213, 213, 0.2);
+            border-radius: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(252, 249, 249, 0.5);
+        }
+        .spinning-emoji {
+            font-size: 120px;
+            margin: 50px 0;
+            animation: spin 3s infinite linear;
         }
         @keyframes spin {
-            0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        .popup {
-            position: absolute;
-            width: 300px;
-            background: white;
-            color: black;
-            padding: 20px;
-            border: 5px dashed hotpink;
-            box-shadow: 5px 5px 20px lime;
+        .sound-button {
+            display: block;
+            margin: 30px auto;
+            padding: 15px 25px;
             font-size: 20px;
-            font-weight: bold;
-            transform: rotate(5deg);
-            animation: popup 0.5s infinite, spin 1s infinite;
-        }
-        @keyframes popup {
-            0% { transform: translateY(0) rotate(5deg); }
-            50% { transform: translateY(-20px) rotate(-5deg); }
-            100% { transform: translateY(0) rotate(5deg); }
-        }
-        .flash {
-            animation: flash 0.2s infinite alternate;
-        }
-        @keyframes flash {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
+            background-color: white;
+            color: black;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
     </style>
 </head>
 <body>
-    <h1 class="flash">WHY DID YOU LEAVE US, MISS DINH?! 😭😭</h1>
-    <div class="gif-container">
-        <img src="https://media.giphy.com/media/l0IylQoEK6Vh3OC00/giphy.gif" alt="Crying Kid">
-    </div>
-    <marquee behavior="scroll" direction="left" style="font-size: 30px; color: yellow;">WE MISS YOUUUU 💔💔💔💔</marquee>
+    <audio autoplay loop>
+        <source src="https://www.myinstants.com/media/sounds/ad.mp3" type="audio/mp3">
+    </audio>
+    <div class="emoji-bg"></div>
+    <h1>Mrs. Dinh, Why did u leave us???</h1>
+    <div class="message-box">Dear Mrs Dinh, Throughout your 5 years at calamvale u have impacted many students. The first time i met u was year 8, Term 1 Civics, You where and amazing teacher guiding us through teh unit. Then i had the pleasure of u being my teacher for 2 subjects this year, and you did not dissapoint. You are a great teacher and i hope u impact the kids at your new school as much as u impacted us. We do sincerly miss u. But we also wish u all the best. Thansk for everything, Regards, Rylan Gabrielu.</div>
+    <button class="sound-button" onclick="playRandomSound()">Why leave us??</button>
+    <div class="spinning-emoji">😢</div>
+    <div class="spinning-emoji">😭</div>
     <script>
-        setInterval(() => {
-            let popup = document.createElement("div");
-            popup.classList.add("popup");
-            popup.style.top = Math.random() * window.innerHeight + "px";
-            popup.style.left = Math.random() * window.innerWidth + "px";
-            popup.innerText = "Come back pls 💔";
-            document.body.appendChild(popup);
-            setTimeout(() => popup.remove(), 5000);
-        }, 200);
-        
-        setInterval(() => {
-            let floatingGif = document.createElement("img");
-            floatingGif.classList.add("gif-container");
-            floatingGif.src = "https://media.giphy.com/media/TdfyKrN7HGTIY/giphy.gif";
-            floatingGif.style.top = Math.random() * window.innerHeight + "px";
-            floatingGif.style.left = Math.random() * window.innerWidth + "px";
-            document.body.appendChild(floatingGif);
-            setTimeout(() => floatingGif.remove(), 5000);
-        }, 500);
+        document.addEventListener("DOMContentLoaded", function() {
+            let emojiContainer = document.querySelector(".emoji-bg");
+            for (let i = 0; i < 20; i++) {
+                let emoji = document.createElement("div");
+                emoji.classList.add("emoji");
+                emoji.textContent = "😢";
+                emoji.style.left = Math.random() * 100 + "vw";
+                emoji.style.top = Math.random() * 100 + "vh";
+                emoji.style.animationDuration = Math.random() * 3 + 3 + "s";
+                emojiContainer.appendChild(emoji);
+            }
+        });
         
         function playRandomSound() {
             let sounds = [
-                "https://www.myinstants.com/media/sounds/vine-boom.mp3",
-                "https://www.myinstants.com/media/sounds/roblox-oof.mp3",
-                "https://www.myinstants.com/media/sounds/among-us.mp3",
-                "https://www.myinstants.com/media/sounds/fart.mp3",
-                "https://www.myinstants.com/media/sounds/windows-error.mp3",
-                "https://www.myinstants.com/media/sounds/naplan.mp3",
-                "https://www.myinstants.com/media/sounds/oh-my-god-bro-oh-hell-nah-man.mp3",
-                "https://www.myinstants.com/media/sounds/discord-call-sound.mp3",
-                "https://www.myinstants.com/media/sounds/emotional-damage-meme.mp3",
-                "https://www.myinstants.com/media/sounds/spongebob-squarepants-the-yellow-album-21-electric-zoo-audiotrimmer.mp3",
-                "https://www.myinstants.com/media/sounds/asian-gong-music.mp3"
+                "https://www.myinstants.com/media/sounds/ad.mp3",
             ];
             let audio = new Audio(sounds[Math.floor(Math.random() * sounds.length)]);
             audio.play();
         }
-        setInterval(playRandomSound, 3000);
-        
-        setInterval(() => {
-            document.body.style.background = "rgb(" +
-                Math.floor(Math.random() * 256) + "," +
-                Math.floor(Math.random() * 256) + "," +
-                Math.floor(Math.random() * 256) + ")";
-        }, 100);
     </script>
 </body>
 </html>
+
