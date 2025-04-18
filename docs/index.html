@@ -1,15 +1,3 @@
-Certainly! Here’s an enhanced version of the NVIDIA GPU Tier List website (index.html) that includes interactive sections for the RTX 20, 30, 40, and 50 series, encompassing all standard, Ti, and Super variants. Each GPU card is clickable to reveal detailed specifications.
-
-⸻
-
-✅ Features
-	•	Interactive Tier Sections: Organized by GPU series (20, 30, 40, 50).
-	•	Expandable GPU Cards: Click on a GPU to toggle its specifications.
-	•	Responsive Design: Ensures usability across various devices.
-
-⸻
-
-🖥️ index.html
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,9 +56,144 @@ Certainly! Here’s an enhanced version of the NVIDIA GPU Tier List website (ind
   </style>
 </head>
 <body>
-  <header>
-    NVIDIA Graphics Card Tier List
-  </header>
+  <header>NVIDIA GPU Tier List</header>
+
+  <!-- RTX 20 Series -->
+  <div class="tier" id="rtx-20-series">
+    <h2>RTX 20 Series</h2>
+    <div class="gpu-list">
+      <!-- 2080 Ti / Super / 2080 -->
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 2080 Ti
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 4352</p>
+          <p><strong>Memory:</strong> 11 GB GDDR6</p>
+          <p><strong>Boost Clock:</strong> 1.635 GHz</p>
+          <p><strong>Power:</strong> 250 W</p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 2080 Super
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 3072</p>
+          <p><strong>Memory:</strong> 8 GB GDDR6</p>
+          <p><strong>Boost Clock:</strong> 1.815 GHz</p>
+          <p><strong>Power:</strong> 250 W</p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 2080
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 2944</p>
+          <p><strong>Memory:</strong> 8 GB GDDR6</p>
+          <p><strong>Boost Clock:</strong> 1.710 GHz</p>
+          <p><strong>Power:</strong> 215 W</p>
+        </div>
+      </div>
+      <!-- 2070 Super / 2070 -->
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 2070 Super
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 2560</p>
+          <p><strong>Memory:</strong> 8 GB GDDR6</p>
+          <p><strong>Boost Clock:</strong> 1.770 GHz</p>
+          <p><strong>Power:</strong> 215 W</p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 2070
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 2304</p>
+          <p><strong>Memory:</strong> 8 GB GDDR6</p>
+          <p><strong>Boost Clock:</strong> 1.620 GHz</p>
+          <p><strong>Power:</strong> 175 W</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RTX 30 Series -->
+  <div class="tier" id="rtx-30-series">
+    <h2>RTX 30 Series</h2>
+    <div class="gpu-list">
+      <!-- 3090 Ti / 3090 -->
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 3090 Ti
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 10752</p>
+          <p><strong>Memory:</strong> 24 GB GDDR6X</p>
+          <p><strong>Boost Clock:</strong> 1.86 GHz</p>
+          <p><strong>Power:</strong> 450 W</p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 3090
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 10496</p>
+          <p><strong>Memory:</strong> 24 GB GDDR6X</p>
+          <p><strong>Boost Clock:</strong> 1.70 GHz</p>
+          <p><strong>Power:</strong> 350 W</p>
+        </div>
+      </div>
+      <!-- 3080 Ti / 3080 -->
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 3080 Ti
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 10240</p>
+          <p><strong>Memory:</strong> 12 GB GDDR6X</p>
+          <p><strong>Boost Clock:</strong> 1.67 GHz</p>
+          <p><strong>Power:</strong> 350 W</p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 3080
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 8704</p>
+          <p><strong>Memory:</strong> 10 GB GDDR6X</p>
+          <p><strong>Boost Clock:</strong> 1.71 GHz</p>
+          <p><strong>Power:</strong> 320 W</p>
+        </div>
+      </div>
+      <!-- 3070 Ti / 3070 -->
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 3070 Ti
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 6144</p>
+          <p><strong>Memory:</strong> 8 GB GDDR6X</p>
+          <p><strong>Boost Clock:</strong> 1.77 GHz</p>
+          <p><strong>Power:</strong> 290 W</p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 3070
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 5888</p>
+          <p><strong>Memory:</strong> 8 GB GDDR6</p>
+          <p><strong>Boost Clock:</strong> 1.73 GHz</p>
+          <p><strong>Power:</strong> 220 W</p>
+        </div>
+      </div>
+      <!-- 3060 Ti / 3060 -->
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 3060 Ti
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 4864</p>
+          <p><strong>Memory:</strong> 8 GB GDDR6</p>
+          <p><strong>Boost Clock:</strong> 1.67 GHz</p>
+          <p><strong>Power:</strong> 200 W</p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 3060
+        <div class="gpu-specs">
+          <p><strong>CUDA Cores:</strong> 3584</p>
+          <p><strong>Memory:</strong> 12 GB GDDR6</p>
+          <p><strong>Boost Clock:</strong> 1.78 GHz</p>
+          <p><strong>Power:</strong> 170 W</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- RTX 40 Series -->
   <div class="tier" id="rtx-40-series">
@@ -79,77 +202,151 @@ Certainly! Here’s an enhanced version of the NVIDIA GPU Tier List website (ind
       <div class="gpu-card" onclick="toggleSpecs(this)">
         RTX 4090
         <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 16,384</p>
-          <p><strong>Memory:</strong> 24GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.52 GHz</p>
-          <p><strong>Power:</strong> 450W</p>
+          <p><strong>CUDA Cores:</strong> 16384</p>
+          <p><strong>Memory:</strong> 24 GB GDDR6X</p>
+          <p><strong>Boost Clock:</strong> 2.52 GHz</p>
+          <p><strong>Power:</strong> 450 W</p>
         </div>
       </div>
+      <!-- 4080 Super / 4080 -->
       <div class="gpu-card" onclick="toggleSpecs(this)">
         RTX 4080 Super
         <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 10,240</p>
-          <p><strong>Memory:</strong> 16GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.55 GHz</p>
-          <p><strong>Power:</strong> 320W</p>
+          <p><strong>CUDA Cores:</strong> 10240</p>
+          <p><strong>Memory:</strong> 16 GB GDDR6X</p>
+          <p><strong>Boost Clock:</strong> 2.55 GHz</p>
+          <p><strong>Power:</strong> 320 W</p>
         </div>
       </div>
       <div class="gpu-card" onclick="toggleSpecs(this)">
         RTX 4080
         <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 9,728</p>
-          <p><strong>Memory:</strong> 16GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.51 GHz</p>
-          <p><strong>Power:</strong> 320W</p>
+          <p><strong>CUDA Cores:</strong> 9728</p>
+          <p><strong>Memory:</strong> 16 GB GDDR6X</p>
+          <p><strong>Boost Clock:</strong> 2.51 GHz</p>
+          <p><strong>Power:</strong> 320 W</p>
         </div>
       </div>
+      <!-- 4070 Ti Super / Ti / 4070 -->
       <div class="gpu-card" onclick="toggleSpecs(this)">
         RTX 4070 Ti Super
         <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 8,448</p>
-          <p><strong>Memory:</strong> 12GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.61 GHz</p>
-          <p><strong>Power:</strong> 285W</p>
+          <p><strong>CUDA Cores:</strong> 8448</p>
+          <p><strong>Memory:</strong> 12 GB GDDR6X</p>
+          <p><strong>Boost Clock:</strong> 2.61 GHz</p>
+          <p><strong>Power:</strong> 285 W</p>
         </div>
       </div>
       <div class="gpu-card" onclick="toggleSpecs(this)">
         RTX 4070 Ti
         <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 7,680</p>
-          <p><strong>Memory:</strong> 12GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.61 GHz</p>
-          <p><strong>Power:</strong> 285W</p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 4070 Super
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 7,168</p>
-          <p><strong>Memory:</strong> 12GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.48 GHz</p>
-          <p><strong>Power:</strong> 220W</p>
+          <p><strong>CUDA Cores:</strong> 7680</p>
+          <p><strong>Memory:</strong> 12 GB GDDR6X</p>
+          <p><strong>Boost Clock:</strong> 2.61 GHz</p>
+          <p><strong>Power:</strong> 285 W</p>
         </div>
       </div>
       <div class="gpu-card" onclick="toggleSpecs(this)">
         RTX 4070
         <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 5,888</p>
-          <p><strong>Memory:</strong> 12GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.48 GHz</p>
-          <p><strong>Power:</strong> 200W</p>
+          <p><strong>CUDA Cores:</strong> 5888</p>
+          <p><strong>Memory:</strong> 12 GB GDDR6X</p>
+          <p><strong>Boost Clock:</strong> 2.48 GHz</p>
+          <p><strong>Power:</strong> 200 W</p>
         </div>
       </div>
+      <!-- 4060 Ti / 4060 -->
       <div class="gpu-card" onclick="toggleSpecs(this)">
         RTX 4060 Ti
         <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 4,352</p>
-          <p><strong>Memory:</strong> 8GB/16GB GDDR6</p>
-          <p><strong>Boost Clock:</strong> 2.54 GHz</p>
-          <p><strong>Power:</strong> 160W</p>
+          <p><strong>CUDA Cores:</strong> 4352</p>
+          <p><strong>Memory:</strong> 8 GB GDDR6</p>
+          <p><strong>Boost Clock:</strong> 2.54 GHz</p>
+          <p><strong>Power:</strong> 160 W</p>
         </div>
       </div>
       <div class="gpu-card" onclick="toggleSpecs(this)">
         RTX 4060
         <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 3,072</p>
-          <p>< 
+          <p><strong>CUDA Cores:</strong> 3072</p>
+          <p><strong>Memory:</strong> 8 GB GDDR6</p>
+          <p><strong>Boost Clock:</strong> 2.33 GHz</p>
+          <p><strong>Power:</strong> 115 W</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RTX 50 Series (placeholders) -->
+  <div class="tier" id="rtx-50-series">
+    <h2>RTX 50 Series (TBD)</h2>
+    <div class="gpu-list">
+      <!-- RTX 5090 Ti / Super / 5090 -->
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 5090 Ti
+        <div class="gpu-specs">
+          <p><em>Specs coming soon…</em></p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 5090 Super
+        <div class="gpu-specs">
+          <p><em>Specs coming soon…</em></p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 5090
+        <div class="gpu-specs">
+          <p><em>Specs coming soon…</em></p>
+        </div>
+      </div>
+      <!-- RTX 5080 Ti / Super / 5080 -->
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 5080 Ti
+        <div class="gpu-specs">
+          <p><em>Specs coming soon…</em></p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 5080 Super
+        <div class="gpu-specs">
+          <p><em>Specs coming soon…</em></p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 5080
+        <div class="gpu-specs">
+          <p><em>Specs coming soon…</em></p>
+        </div>
+      </div>
+      <!-- RTX 5070 Ti / Super / 5070 -->
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 5070 Ti
+        <div class="gpu-specs">
+          <p><em>Specs coming soon…</em></p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 5070 Super
+        <div class="gpu-specs">
+          <p><em>Specs coming soon…</em></p>
+        </div>
+      </div>
+      <div class="gpu-card" onclick="toggleSpecs(this)">
+        RTX 5070
+        <div class="gpu-specs">
+          <p><em>Specs coming soon…</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleSpecs(card) {
+      const specs = card.querySelector('.gpu-specs');
+      specs.style.display = specs.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>
+
