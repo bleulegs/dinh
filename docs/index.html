@@ -1,352 +1,591 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NVIDIA GPU Tier List</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #1e1e1e;
-      padding: 20px;
-      text-align: center;
-      font-size: 24px;
-    }
-    .tier {
-      margin: 20px;
-      padding: 15px;
-      border: 2px solid #444;
-      border-radius: 10px;
-    }
-    .tier h2 {
-      margin-top: 0;
-      color: #00ff99;
-    }
-    .gpu-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .gpu-card {
-      background-color: #222;
-      padding: 10px;
-      border: 1px solid #333;
-      border-radius: 8px;
-      cursor: pointer;
-      flex: 1 0 200px;
-      transition: background 0.2s;
-    }
-    .gpu-card:hover {
-      background-color: #333;
-    }
-    .gpu-specs {
-      display: none;
-      margin-top: 10px;
-      background-color: #181818;
-      padding: 10px;
-      border-radius: 6px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant | Your Website</title>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338CA;
+            --light: #F9FAFB;
+            --dark: #1F2937;
+            --gray: #9CA3AF;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #F3F4F6;
+            color: var(--dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            padding: 2rem;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .chat-container {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 1rem;
+            background-color: var(--light);
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .assistant-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .assistant-info p {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .chat-status {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--success);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .message {
+            display: flex;
+            gap: 1rem;
+            max-width: 85%;
+        }
+
+        .message.user {
+            margin-left: auto;
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .message-content {
+            background-color: var(--light);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            border-top-left-radius: 0;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .message.user .message-content {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 12px;
+            border-top-right-radius: 0;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+
+        .message.user .message-time {
+            text-align: right;
+        }
+
+        .chat-input {
+            padding: 1rem;
+            background-color: var(--light);
+            border-top: 1px solid #E5E7EB;
+        }
+
+        .input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            padding-right: 6rem;
+            border-radius: 8px;
+            border: 1px solid #E5E7EB;
+            font-size: 0.95rem;
+            resize: none;
+            min-height: 50px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+        }
+
+        .input-actions {
+            position: absolute;
+            right: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            transition: all 0.2s;
+        }
+
+        .action-button:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--dark);
+        }
+
+        .send-button {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .send-button:hover {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+
+        .features-panel {
+            width: 300px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .panel-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .model-selector {
+            width: 100%;
+            padding: 0.65rem;
+            border-radius: 6px;
+            border: 1px solid #E5E7EB;
+            background-color: white;
+            font-size: 0.9rem;
+        }
+
+        .toggle-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .toggle-label {
+            font-size: 0.9rem;
+        }
+
+        .toggle {
+            position: relative;
+            width: 36px;
+            height: 20px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #E5E7EB;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(16px);
+        }
+
+        .range-container {
+            margin-bottom: 0.75rem;
+        }
+
+        .range-container label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .range-value {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .range-input {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 5px;
+            background: #E5E7EB;
+            outline: none;
+        }
+
+        .range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 3px;
+            padding: 6px 12px;
+            background-color: var(--light);
+            border-radius: 12px;
+            width: fit-content;
+            margin-top: 8px;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--gray);
+            border-radius: 50%;
+            animation: bounce 1.5s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes bounce {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-4px);
+            }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 900px) {
+            main {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .features-panel {
+                width: 100%;
+                order: -1;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>NVIDIA GPU Tier List</header>
+    <header>
+        <div class="logo">YourBrand AI</div>
+        <div class="chat-status">
+            <div class="status-indicator"></div>
+            <span>Online</span>
+        </div>
+    </header>
 
-  <!-- RTX 20 Series -->
-  <div class="tier" id="rtx-20-series">
-    <h2>RTX 20 Series</h2>
-    <div class="gpu-list">
-      <!-- 2080 Ti / Super / 2080 -->
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 2080 Ti
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 4352</p>
-          <p><strong>Memory:</strong> 11 GB GDDR6</p>
-          <p><strong>Boost Clock:</strong> 1.635 GHz</p>
-          <p><strong>Power:</strong> 250 W</p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 2080 Super
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 3072</p>
-          <p><strong>Memory:</strong> 8 GB GDDR6</p>
-          <p><strong>Boost Clock:</strong> 1.815 GHz</p>
-          <p><strong>Power:</strong> 250 W</p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 2080
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 2944</p>
-          <p><strong>Memory:</strong> 8 GB GDDR6</p>
-          <p><strong>Boost Clock:</strong> 1.710 GHz</p>
-          <p><strong>Power:</strong> 215 W</p>
-        </div>
-      </div>
-      <!-- 2070 Super / 2070 -->
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 2070 Super
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 2560</p>
-          <p><strong>Memory:</strong> 8 GB GDDR6</p>
-          <p><strong>Boost Clock:</strong> 1.770 GHz</p>
-          <p><strong>Power:</strong> 215 W</p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 2070
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 2304</p>
-          <p><strong>Memory:</strong> 8 GB GDDR6</p>
-          <p><strong>Boost Clock:</strong> 1.620 GHz</p>
-          <p><strong>Power:</strong> 175 W</p>
-        </div>
-      </div>
-    </div>
-  </div>
+    <main>
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="avatar">AI</div>
+                <div class="assistant-info">
+                    <h3>AI Assistant</h3>
+                    <p>Custom AI powered by YourBrand</p>
+                </div>
+            </div>
 
-  <!-- RTX 30 Series -->
-  <div class="tier" id="rtx-30-series">
-    <h2>RTX 30 Series</h2>
-    <div class="gpu-list">
-      <!-- 3090 Ti / 3090 -->
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 3090 Ti
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 10752</p>
-          <p><strong>Memory:</strong> 24 GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 1.86 GHz</p>
-          <p><strong>Power:</strong> 450 W</p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 3090
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 10496</p>
-          <p><strong>Memory:</strong> 24 GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 1.70 GHz</p>
-          <p><strong>Power:</strong> 350 W</p>
-        </div>
-      </div>
-      <!-- 3080 Ti / 3080 -->
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 3080 Ti
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 10240</p>
-          <p><strong>Memory:</strong> 12 GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 1.67 GHz</p>
-          <p><strong>Power:</strong> 350 W</p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 3080
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 8704</p>
-          <p><strong>Memory:</strong> 10 GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 1.71 GHz</p>
-          <p><strong>Power:</strong> 320 W</p>
-        </div>
-      </div>
-      <!-- 3070 Ti / 3070 -->
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 3070 Ti
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 6144</p>
-          <p><strong>Memory:</strong> 8 GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 1.77 GHz</p>
-          <p><strong>Power:</strong> 290 W</p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 3070
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 5888</p>
-          <p><strong>Memory:</strong> 8 GB GDDR6</p>
-          <p><strong>Boost Clock:</strong> 1.73 GHz</p>
-          <p><strong>Power:</strong> 220 W</p>
-        </div>
-      </div>
-      <!-- 3060 Ti / 3060 -->
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 3060 Ti
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 4864</p>
-          <p><strong>Memory:</strong> 8 GB GDDR6</p>
-          <p><strong>Boost Clock:</strong> 1.67 GHz</p>
-          <p><strong>Power:</strong> 200 W</p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 3060
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 3584</p>
-          <p><strong>Memory:</strong> 12 GB GDDR6</p>
-          <p><strong>Boost Clock:</strong> 1.78 GHz</p>
-          <p><strong>Power:</strong> 170 W</p>
-        </div>
-      </div>
-    </div>
-  </div>
+            <div class="chat-messages">
+                <div class="message">
+                    <div class="message-avatar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"></path>
+                            <path d="M20 13c0 5.523-3.582 10-8 10s-8-4.477-8-10"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="message-content">
+                            Hello! I'm your custom AI assistant. How can I help you today?
+                        </div>
+                        <div class="message-time">10:30 AM</div>
+                    </div>
+                </div>
 
-  <!-- RTX 40 Series -->
-  <div class="tier" id="rtx-40-series">
-    <h2>RTX 40 Series</h2>
-    <div class="gpu-list">
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 4090
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 16384</p>
-          <p><strong>Memory:</strong> 24 GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.52 GHz</p>
-          <p><strong>Power:</strong> 450 W</p>
-        </div>
-      </div>
-      <!-- 4080 Super / 4080 -->
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 4080 Super
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 10240</p>
-          <p><strong>Memory:</strong> 16 GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.55 GHz</p>
-          <p><strong>Power:</strong> 320 W</p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 4080
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 9728</p>
-          <p><strong>Memory:</strong> 16 GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.51 GHz</p>
-          <p><strong>Power:</strong> 320 W</p>
-        </div>
-      </div>
-      <!-- 4070 Ti Super / Ti / 4070 -->
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 4070 Ti Super
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 8448</p>
-          <p><strong>Memory:</strong> 12 GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.61 GHz</p>
-          <p><strong>Power:</strong> 285 W</p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 4070 Ti
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 7680</p>
-          <p><strong>Memory:</strong> 12 GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.61 GHz</p>
-          <p><strong>Power:</strong> 285 W</p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 4070
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 5888</p>
-          <p><strong>Memory:</strong> 12 GB GDDR6X</p>
-          <p><strong>Boost Clock:</strong> 2.48 GHz</p>
-          <p><strong>Power:</strong> 200 W</p>
-        </div>
-      </div>
-      <!-- 4060 Ti / 4060 -->
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 4060 Ti
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 4352</p>
-          <p><strong>Memory:</strong> 8 GB GDDR6</p>
-          <p><strong>Boost Clock:</strong> 2.54 GHz</p>
-          <p><strong>Power:</strong> 160 W</p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 4060
-        <div class="gpu-specs">
-          <p><strong>CUDA Cores:</strong> 3072</p>
-          <p><strong>Memory:</strong> 8 GB GDDR6</p>
-          <p><strong>Boost Clock:</strong> 2.33 GHz</p>
-          <p><strong>Power:</strong> 115 W</p>
-        </div>
-      </div>
-    </div>
-  </div>
+                <div class="message user">
+                    <div class="message-avatar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="message-content">
+                            Can you tell me about your capabilities?
+                        </div>
+                        <div class="message-time">10:31 AM</div>
+                    </div>
+                </div>
 
-  <!-- RTX 50 Series (placeholders) -->
-  <div class="tier" id="rtx-50-series">
-    <h2>RTX 50 Series (TBD)</h2>
-    <div class="gpu-list">
-      <!-- RTX 5090 Ti / Super / 5090 -->
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 5090 Ti
-        <div class="gpu-specs">
-          <p><em>Specs coming soon…</em></p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 5090 Super
-        <div class="gpu-specs">
-          <p><em>Specs coming soon…</em></p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 5090
-        <div class="gpu-specs">
-          <p><em>Specs coming soon…</em></p>
-        </div>
-      </div>
-      <!-- RTX 5080 Ti / Super / 5080 -->
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 5080 Ti
-        <div class="gpu-specs">
-          <p><em>Specs coming soon…</em></p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 5080 Super
-        <div class="gpu-specs">
-          <p><em>Specs coming soon…</em></p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 5080
-        <div class="gpu-specs">
-          <p><em>Specs coming soon…</em></p>
-        </div>
-      </div>
-      <!-- RTX 5070 Ti / Super / 5070 -->
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 5070 Ti
-        <div class="gpu-specs">
-          <p><em>Specs coming soon…</em></p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 5070 Super
-        <div class="gpu-specs">
-          <p><em>Specs coming soon…</em></p>
-        </div>
-      </div>
-      <div class="gpu-card" onclick="toggleSpecs(this)">
-        RTX 5070
-        <div class="gpu-specs">
-          <p><em>Specs coming soon…</em></p>
-        </div>
-      </div>
-    </div>
-  </div>
+                <div class="message">
+                    <div class="message-avatar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"></path>
+                            <path d="M20 13c0 5.523-3.582 10-8 10s-8-4.477-8-10"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="message-content">
+                            I'm a custom AI assistant designed specifically for your website. I can answer questions, provide information about your products and services, help with troubleshooting, generate creative content, and assist with a wide range of tasks. Feel free to ask me anything, and I'll do my best to help!
+                        </div>
+                        <div class="message-time">10:32 AM</div>
+                    </div>
+                </div>
 
-  <script>
-    function toggleSpecs(card) {
-      const specs = card.querySelector('.gpu-specs');
-      specs.style.display = specs.style.display === 'block' ? 'none' : 'block';
-    }
-  </script>
+                <div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+
+            <div class="chat-input">
+                <div class="input-container">
+                    <textarea class="input-field" placeholder="Type your message here..." rows="1"></textarea>
+                    <div class="input-actions">
+                        <button class="action-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 18v-6"></path>
+                                <path d="M8 12h8"></path>
+                                <rect x="3" y="6" width="18" height="12" rx="2" ry="2"></rect>
+                            </svg>
+                        </button>
+                        <button class="action-button send-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features-panel">
+            <div class="panel-section">
+                <h3>AI Model Settings</h3>
+                <select class="model-selector">
+                    <option value="standard">Standard Model</option>
+                    <option value="advanced">Advanced Model</option>
+                    <option value="expert">Expert Model</option>
+                </select>
+            </div>
+
+            <div class="panel-section">
+                <h3>Behavior Controls</h3>
+                <div class="toggle-container">
+                    <span class="toggle-label">Concise Responses</span>
+                    <label class="toggle">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-container">
+                    <span class="toggle-label">Deep Analysis</span>
+                    <label class="toggle">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-container">
+                    <span class="toggle-label">Creative Mode</span>
+                    <label class="toggle">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Parameter Adjustments</h3>
+                <div class="range-container">
+                    <label>
+                        <span>Temperature</span>
+                        <span class="range-value">0.7</span>
+                    </label>
+                    <input type="range" min="0" max="1" step="0.1" value="0.7" class="range-input">
+                </div>
+                <div class="range-container">
+                    <label>
+                        <span>Response Length</span>
+                        <span class="range-value">Medium</span>
+                    </label>
+                    <input type="range" min="1" max="3" step="1" value="2" class="range-input">
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Chat History</h3>
+                <div class="toggle-container">
+                    <span class="toggle-label">Remember Context</span>
+                    <label class="toggle">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <button style="width: 100%; padding: 0.5rem; background-color: #F3F4F6; border: 1px solid #E5E7EB; border-radius: 6px; cursor: pointer; margin-top: 0.5rem;">
+                    Start New Chat
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Basic functionality for textarea auto-resize
+        const textarea = document.querySelector('.input-field');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+        // Toggle typing indicator (just for demo)
+        setTimeout(() => {
+            document.querySelector('.typing-indicator').style.display = 'none';
+        }, 3000);
+    </script>
 </body>
 </html>
-
