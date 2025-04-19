@@ -404,124 +404,186 @@
         </footer>
     </div>
 
-    <script>
-        // DOM Elements
-        const generateBtn = document.getElementById('generate-btn');
-        const clearBtn = document.getElementById('clear-btn');
-        const promptInput = document.getElementById('prompt');
-        const styleSelect = document.getElementById('style');
-        const sizeSelect = document.getElementById('size');
-        const generatedImage = document.getElementById('generated-image');
-        const placeholderText = document.querySelector('.placeholder-text');
-        const loading = document.querySelector('.loading');
-        const imageHistory = document.querySelector('.image-history');
+    // This code should replace the script section in your HTML file
+
+<script>
+    // DOM Elements
+    const generateBtn = document.getElementById('generate-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const promptInput = document.getElementById('prompt');
+    const styleSelect = document.getElementById('style');
+    const sizeSelect = document.getElementById('size');
+    const generatedImage = document.getElementById('generated-image');
+    const placeholderText = document.querySelector('.placeholder-text');
+    const loading = document.querySelector('.loading');
+    const imageHistory = document.querySelector('.image-history');
+    
+    // API endpoint (update this to match your backend)
+    const API_URL = 'http://localhost:5000/api';
+    
+    // Store history of generated images
+    const history = [];
+    const maxHistory = 8;
+    
+    // Generate image function - connects to backend
+    async function generateImage() {
+        const prompt = promptInput.value.trim();
         
-        // Store history of generated images
-        const history = [];
-        const maxHistory = 8;
+        if (!prompt) {
+            alert('Please enter a prompt first!');
+            return;
+        }
         
-        // Placeholder images for different styles
-        const stylePlaceholders = {
-            'photorealistic': ['/api/placeholder/768/768', '/api/placeholder/768/768'],
-            'digital-art': ['/api/placeholder/768/768', '/api/placeholder/768/768'],
-            'painting': ['/api/placeholder/768/768', '/api/placeholder/768/768'],
-            'sketch': ['/api/placeholder/768/768', '/api/placeholder/768/768'],
-            'anime': ['/api/placeholder/768/768', '/api/placeholder/768/768'],
-            'pixel-art': ['/api/placeholder/768/768', '/api/placeholder/768/768']
-        };
+        const style = styleSelect.value;
+        const size = sizeSelect.value;
         
-        // Generate image function (simulated)
-        function generateImage() {
-            const prompt = promptInput.value.trim();
+        // Show loading spinner
+        loading.style.display = 'flex';
+        placeholderText.style.display = 'none';
+        
+        try {
+            // Call the backend API
+            const response = await fetch(`${API_URL}/generate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    prompt,
+                    style,
+                    size,
+                    steps: 30,
+                    guidanceScale: 7.5
+                })
+            });
             
-            if (!prompt) {
-                alert('Please enter a prompt first!');
-                return;
+            if (!response.ok) {
+                throw new Error('Failed to generate image');
             }
             
-            const style = styleSelect.value;
-            const size = sizeSelect.value;
+            const data = await response.json();
             
-            // Show loading spinner
-            loading.style.display = 'flex';
-            placeholderText.style.display = 'none';
-            
-            // Simulate API call delay
-            setTimeout(() => {
-                // Get a placeholder image based on the selected style
-                const styleImages = stylePlaceholders[style];
-                const randomIndex = Math.floor(Math.random() * styleImages.length);
-                const imageUrl = styleImages[randomIndex];
-                
-                // Update image
+            if (data.success) {
+                // Update image with the URL from the backend
+                const imageUrl = data.image;
                 generatedImage.src = imageUrl;
                 generatedImage.style.display = 'block';
-                
-                // Hide loading spinner
-                loading.style.display = 'none';
                 
                 // Add to history
                 addToHistory(imageUrl, prompt);
-                
-            }, 2000); // Simulate 2 second delay
-        }
-        
-        // Add image to history
-        function addToHistory(imageUrl, prompt) {
-            // Create history item
-            const historyItem = document.createElement('div');
-            historyItem.className = 'history-item';
-            
-            const img = document.createElement('img');
-            img.src = imageUrl;
-            img.alt = prompt;
-            
-            const promptText = document.createElement('div');
-            promptText.className = 'prompt-text';
-            promptText.textContent = prompt;
-            
-            historyItem.appendChild(img);
-            historyItem.appendChild(promptText);
-            
-            // Add click event to load this image
-            historyItem.addEventListener('click', () => {
-                generatedImage.src = imageUrl;
-                generatedImage.style.display = 'block';
-                placeholderText.style.display = 'none';
-                promptInput.value = prompt;
-            });
-            
-            // Add to history array and DOM
-            history.unshift({ imageUrl, prompt });
-            imageHistory.prepend(historyItem);
-            
-            // Limit history size
-            if (history.length > maxHistory) {
-                history.pop();
-                if (imageHistory.children.length > maxHistory) {
-                    imageHistory.removeChild(imageHistory.lastChild);
-                }
+            } else {
+                throw new Error(data.error || 'Image generation failed');
             }
-        }
-        
-        // Clear function
-        function clearAll() {
-            promptInput.value = '';
-            generatedImage.style.display = 'none';
+        } catch (error) {
+            console.error('Error:', error);
+            alert(`Error generating image: ${error.message}`);
             placeholderText.style.display = 'block';
+            placeholderText.textContent = 'Error generating image. Please try again.';
+        } finally {
+            // Hide loading spinner
+            loading.style.display = 'none';
         }
-        
-        // Event listeners
-        generateBtn.addEventListener('click', generateImage);
-        clearBtn.addEventListener('click', clearAll);
-        
-        // Allow generating by pressing Enter in textarea
-        promptInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                generateImage();
+    }
+    
+    // Load recent generations from the backend
+    async function loadRecentGenerations() {
+        try {
+            const response = await fetch(`${API_URL}/recent?limit=${maxHistory}`);
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch recent generations');
             }
+            
+            const data = await response.json();
+            
+            // Clear current history
+            imageHistory.innerHTML = '';
+            
+            // Add each image to history
+            data.images.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                
+                const img = document.createElement('img');
+                img.src = item.url;
+                img.alt = 'Generated image';
+                
+                historyItem.appendChild(img);
+                
+                // Add click event to load this image
+                historyItem.addEventListener('click', () => {
+                    generatedImage.src = item.url;
+                    generatedImage.style.display = 'block';
+                    placeholderText.style.display = 'none';
+                });
+                
+                imageHistory.appendChild(historyItem);
+            });
+        } catch (error) {
+            console.error('Error loading recent generations:', error);
+        }
+    }
+    
+    // Add image to history
+    function addToHistory(imageUrl, prompt) {
+        // Create history item
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = prompt;
+        
+        const promptText = document.createElement('div');
+        promptText.className = 'prompt-text';
+        promptText.textContent = prompt;
+        
+        historyItem.appendChild(img);
+        historyItem.appendChild(promptText);
+        
+        // Add click event to load this image
+        historyItem.addEventListener('click', () => {
+            generatedImage.src = imageUrl;
+            generatedImage.style.display = 'block';
+            placeholderText.style.display = 'none';
+            promptInput.value = prompt;
         });
-    </script>
+        
+        // Add to history array and DOM
+        history.unshift({ imageUrl, prompt });
+        imageHistory.prepend(historyItem);
+        
+        // Limit history size
+        if (history.length > maxHistory) {
+            history.pop();
+            if (imageHistory.children.length > maxHistory) {
+                imageHistory.removeChild(imageHistory.lastChild);
+            }
+        }
+    }
+    
+    // Clear function
+    function clearAll() {
+        promptInput.value = '';
+        generatedImage.style.display = 'none';
+        placeholderText.style.display = 'block';
+        placeholderText.textContent = 'Your generated image will appear here';
+    }
+    
+    // Event listeners
+    generateBtn.addEventListener('click', generateImage);
+    clearBtn.addEventListener('click', clearAll);
+    
+    // Allow generating by pressing Enter in textarea
+    promptInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            generateImage();
+        }
+    });
+    
+    // Load recent generations when the page loads
+    document.addEventListener('DOMContentLoaded', loadRecentGenerations);
+</script>
 </body>
 </html>
