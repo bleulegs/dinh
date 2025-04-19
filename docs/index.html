@@ -3,589 +3,525 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Assistant | Your Website</title>
+    <title>AI Image Generator</title>
     <style>
         :root {
-            --primary: #4F46E5;
-            --primary-dark: #4338CA;
-            --light: #F9FAFB;
-            --dark: #1F2937;
-            --gray: #9CA3AF;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --error: #EF4444;
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2ecc71;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --danger: #e74c3c;
+            --warning: #f39c12;
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            background-color: #F3F4F6;
+            background-color: #f8f9fa;
             color: var(--dark);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
+            line-height: 1.6;
         }
-
-        header {
-            background-color: white;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        main {
-            flex: 1;
-            display: flex;
-            padding: 2rem;
-            gap: 2rem;
-            max-width: 1400px;
+        
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            width: 100%;
+            padding: 20px;
         }
-
-        .chat-container {
-            flex: 1;
-            background: white;
-            border-radius: 12px;
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .controls {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
         }
-
-        .chat-header {
-            padding: 1rem;
-            background-color: var(--light);
-            border-bottom: 1px solid #E5E7EB;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+        
+        .form-group {
+            margin-bottom: 20px;
         }
-
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
             font-weight: 600;
+            color: var(--dark);
         }
-
-        .assistant-info h3 {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .assistant-info p {
-            font-size: 0.85rem;
-            color: var(--gray);
-        }
-
-        .chat-status {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .status-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: var(--success);
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 1.5rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .message {
-            display: flex;
-            gap: 1rem;
-            max-width: 85%;
-        }
-
-        .message.user {
-            margin-left: auto;
-            flex-direction: row-reverse;
-        }
-
-        .message-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background-color: var(--light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .message.user .message-avatar {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .message-content {
-            background-color: var(--light);
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            border-top-left-radius: 0;
-            line-height: 1.5;
-            font-size: 0.95rem;
-        }
-
-        .message.user .message-content {
-            background-color: var(--primary);
-            color: white;
-            border-radius: 12px;
-            border-top-right-radius: 0;
-        }
-
-        .message-time {
-            font-size: 0.75rem;
-            color: var(--gray);
-            margin-top: 0.25rem;
-        }
-
-        .message.user .message-time {
-            text-align: right;
-        }
-
-        .chat-input {
-            padding: 1rem;
-            background-color: var(--light);
-            border-top: 1px solid #E5E7EB;
-        }
-
-        .input-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-field {
+        
+        textarea, input, select {
             width: 100%;
-            padding: 0.75rem 1rem;
-            padding-right: 6rem;
-            border-radius: 8px;
-            border: 1px solid #E5E7EB;
-            font-size: 0.95rem;
-            resize: none;
-            min-height: 50px;
-            max-height: 150px;
-            overflow-y: auto;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
         }
-
-        .input-field:focus {
+        
+        textarea:focus, input:focus, select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
         }
-
-        .input-actions {
-            position: absolute;
-            right: 0.5rem;
-            display: flex;
-            gap: 0.5rem;
+        
+        textarea {
+            height: 120px;
+            resize: vertical;
         }
-
-        .action-button {
-            background: none;
+        
+        button {
+            background-color: var(--primary);
+            color: white;
             border: none;
+            border-radius: 5px;
+            padding: 12px 25px;
+            font-size: 16px;
             cursor: pointer;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+            transition: background-color 0.3s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        button svg {
+            margin-right: 8px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .button-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .button-secondary:hover {
+            background-color: #27ae60;
+        }
+        
+        .output {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            min-height: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .image-container {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--gray);
-            transition: all 0.2s;
-        }
-
-        .action-button:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-            color: var(--dark);
-        }
-
-        .send-button {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .send-button:hover {
-            background-color: var(--primary-dark);
-            color: white;
-        }
-
-        .features-panel {
-            width: 300px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .panel-section h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        .model-selector {
-            width: 100%;
-            padding: 0.65rem;
-            border-radius: 6px;
-            border: 1px solid #E5E7EB;
-            background-color: white;
-            font-size: 0.9rem;
-        }
-
-        .toggle-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-
-        .toggle-label {
-            font-size: 0.9rem;
-        }
-
-        .toggle {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            overflow: hidden;
             position: relative;
-            width: 36px;
-            height: 20px;
         }
-
-        .toggle input {
-            opacity: 0;
-            width: 0;
-            height: 0;
+        
+        .generated-image {
+            max-width: 100%;
+            max-height: 500px;
+            display: none;
         }
-
-        .toggle-slider {
+        
+        .placeholder-text {
+            color: #aaa;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading {
             position: absolute;
-            cursor: pointer;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #E5E7EB;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 2px;
-            bottom: 2px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .toggle-slider {
-            background-color: var(--primary);
-        }
-
-        input:checked + .toggle-slider:before {
-            transform: translateX(16px);
-        }
-
-        .range-container {
-            margin-bottom: 0.75rem;
-        }
-
-        .range-container label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .range-value {
-            color: var(--primary);
-            font-weight: 500;
-        }
-
-        .range-input {
             width: 100%;
-            -webkit-appearance: none;
-            height: 6px;
-            border-radius: 5px;
-            background: #E5E7EB;
-            outline: none;
-        }
-
-        .range-input::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-        }
-
-        .typing-indicator {
+            height: 100%;
             display: flex;
-            gap: 3px;
-            padding: 6px 12px;
-            background-color: var(--light);
-            border-radius: 12px;
-            width: fit-content;
-            margin-top: 8px;
-            animation: fadeIn 0.3s;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 10;
+            display: none;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .typing-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--gray);
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
             border-radius: 50%;
-            animation: bounce 1.5s infinite;
+            animation: spin 1s linear infinite;
         }
-
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.1s;
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.2s;
+        
+        .model-info {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
-
-        @keyframes bounce {
-            0%, 60%, 100% {
-                transform: translateY(0);
-            }
-            30% {
-                transform: translateY(-4px);
-            }
+        
+        .model-info h2 {
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 10px;
         }
-
-        /* Mobile responsiveness */
-        @media (max-width: 900px) {
-            main {
-                flex-direction: column;
-                padding: 1rem;
-            }
-            
-            .features-panel {
-                width: 100%;
-                order: -1;
+        
+        .model-card {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .model-icon {
+            flex: 0 0 80px;
+            height: 80px;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: var(--primary);
+        }
+        
+        .model-details h3 {
+            margin-bottom: 5px;
+        }
+        
+        .model-description {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .credit {
+            margin-top: 10px;
+        }
+        
+        .image-history {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .history-item {
+            width: calc(25% - 8px);
+            cursor: pointer;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: transform 0.2s;
+            position: relative;
+        }
+        
+        .history-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .history-item img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+        }
+        
+        .history-item .prompt-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 2px 5px;
+            font-size: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        @media (max-width: 600px) {
+            .history-item {
+                width: calc(33.33% - 7px);
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">YourBrand AI</div>
-        <div class="chat-status">
-            <div class="status-indicator"></div>
-            <span>Online</span>
-        </div>
-    </header>
-
-    <main>
-        <div class="chat-container">
-            <div class="chat-header">
-                <div class="avatar">AI</div>
-                <div class="assistant-info">
-                    <h3>AI Assistant</h3>
-                    <p>Custom AI powered by YourBrand</p>
+    <div class="container">
+        <header>
+            <h1>AI Image Generator</h1>
+            <p class="subtitle">Create unique AI-generated images from text prompts</p>
+        </header>
+        
+        <div class="main">
+            <div class="controls">
+                <div class="form-group">
+                    <label for="prompt">Enter your prompt:</label>
+                    <textarea id="prompt" placeholder="A beautiful landscape with mountains and a lake at sunset..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="style">Image style:</label>
+                    <select id="style">
+                        <option value="photorealistic">Photorealistic</option>
+                        <option value="digital-art">Digital Art</option>
+                        <option value="painting">Painting</option>
+                        <option value="sketch">Sketch</option>
+                        <option value="anime">Anime</option>
+                        <option value="pixel-art">Pixel Art</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="size">Image size:</label>
+                    <select id="size">
+                        <option value="512x512">512 x 512</option>
+                        <option value="640x480">640 x 480</option>
+                        <option value="768x768" selected>768 x 768</option>
+                        <option value="1024x768">1024 x 768</option>
+                    </select>
+                </div>
+                
+                <div class="button-group">
+                    <button id="generate-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        Generate Image
+                    </button>
+                    <button id="clear-btn" class="button-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        Clear
+                    </button>
+                </div>
+                
+                <div class="image-history">
+                    <!-- History images will be added here dynamically -->
                 </div>
             </div>
-
-            <div class="chat-messages">
-                <div class="message">
-                    <div class="message-avatar">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"></path>
-                            <path d="M20 13c0 5.523-3.582 10-8 10s-8-4.477-8-10"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="message-content">
-                            Hello! I'm your custom AI assistant. How can I help you today?
-                        </div>
-                        <div class="message-time">10:30 AM</div>
-                    </div>
-                </div>
-
-                <div class="message user">
-                    <div class="message-avatar">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="message-content">
-                            Can you tell me about your capabilities?
-                        </div>
-                        <div class="message-time">10:31 AM</div>
-                    </div>
-                </div>
-
-                <div class="message">
-                    <div class="message-avatar">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"></path>
-                            <path d="M20 13c0 5.523-3.582 10-8 10s-8-4.477-8-10"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="message-content">
-                            I'm a custom AI assistant designed specifically for your website. I can answer questions, provide information about your products and services, help with troubleshooting, generate creative content, and assist with a wide range of tasks. Feel free to ask me anything, and I'll do my best to help!
-                        </div>
-                        <div class="message-time">10:32 AM</div>
-                    </div>
-                </div>
-
-                <div class="typing-indicator">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-            </div>
-
-            <div class="chat-input">
-                <div class="input-container">
-                    <textarea class="input-field" placeholder="Type your message here..." rows="1"></textarea>
-                    <div class="input-actions">
-                        <button class="action-button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 18v-6"></path>
-                                <path d="M8 12h8"></path>
-                                <rect x="3" y="6" width="18" height="12" rx="2" ry="2"></rect>
-                            </svg>
-                        </button>
-                        <button class="action-button send-button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="22" y1="2" x2="11" y2="13"></line>
-                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                            </svg>
-                        </button>
+            
+            <div class="output">
+                <div class="image-container">
+                    <div class="placeholder-text">Your generated image will appear here</div>
+                    <img id="generated-image" class="generated-image" alt="Generated image" />
+                    <div class="loading">
+                        <div class="spinner"></div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="features-panel">
-            <div class="panel-section">
-                <h3>AI Model Settings</h3>
-                <select class="model-selector">
-                    <option value="standard">Standard Model</option>
-                    <option value="advanced">Advanced Model</option>
-                    <option value="expert">Expert Model</option>
-                </select>
-            </div>
-
-            <div class="panel-section">
-                <h3>Behavior Controls</h3>
-                <div class="toggle-container">
-                    <span class="toggle-label">Concise Responses</span>
-                    <label class="toggle">
-                        <input type="checkbox" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="toggle-container">
-                    <span class="toggle-label">Deep Analysis</span>
-                    <label class="toggle">
-                        <input type="checkbox">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="toggle-container">
-                    <span class="toggle-label">Creative Mode</span>
-                    <label class="toggle">
-                        <input type="checkbox">
-                        <span class="toggle-slider"></span>
-                    </label>
+        
+        <div class="model-info">
+            <h2>About the Image Generation Model</h2>
+            
+            <div class="model-card">
+                <div class="model-icon">🧠</div>
+                <div class="model-details">
+                    <h3>Stable Diffusion XL</h3>
+                    <p class="model-description">
+                        This application uses a simulated version of Stable Diffusion XL, a state-of-the-art AI image generation model. In a full implementation, it would be connected to an actual Stable Diffusion model running on a server. For this demo, we're generating placeholder images that simulate the capabilities of such models.
+                    </p>
                 </div>
             </div>
-
-            <div class="panel-section">
-                <h3>Parameter Adjustments</h3>
-                <div class="range-container">
-                    <label>
-                        <span>Temperature</span>
-                        <span class="range-value">0.7</span>
-                    </label>
-                    <input type="range" min="0" max="1" step="0.1" value="0.7" class="range-input">
+            
+            <div class="model-card">
+                <div class="model-icon">⚙️</div>
+                <div class="model-details">
+                    <h3>Technical Details</h3>
+                    <p class="model-description">
+                        Stable Diffusion XL is a latent text-to-image diffusion model capable of generating photo-realistic images from text prompts. It uses a process called diffusion, where it gradually transforms random noise into a coherent image by following the guidance of a text prompt. In a production environment, this would run on powerful GPUs to provide fast inference.
+                    </p>
                 </div>
-                <div class="range-container">
-                    <label>
-                        <span>Response Length</span>
-                        <span class="range-value">Medium</span>
-                    </label>
-                    <input type="range" min="1" max="3" step="1" value="2" class="range-input">
-                </div>
-            </div>
-
-            <div class="panel-section">
-                <h3>Chat History</h3>
-                <div class="toggle-container">
-                    <span class="toggle-label">Remember Context</span>
-                    <label class="toggle">
-                        <input type="checkbox" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <button style="width: 100%; padding: 0.5rem; background-color: #F3F4F6; border: 1px solid #E5E7EB; border-radius: 6px; cursor: pointer; margin-top: 0.5rem;">
-                    Start New Chat
-                </button>
             </div>
         </div>
-    </main>
+        
+        <footer class="footer">
+            <p>This is a demo application showing the UI for an AI image generator.</p>
+            <p class="credit">Created for demonstration purposes only.</p>
+        </footer>
+    </div>
 
     <script>
-        // Basic functionality for textarea auto-resize
-        const textarea = document.querySelector('.input-field');
-        textarea.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
+        // DOM Elements
+        const generateBtn = document.getElementById('generate-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const promptInput = document.getElementById('prompt');
+        const styleSelect = document.getElementById('style');
+        const sizeSelect = document.getElementById('size');
+        const generatedImage = document.getElementById('generated-image');
+        const placeholderText = document.querySelector('.placeholder-text');
+        const loading = document.querySelector('.loading');
+        const imageHistory = document.querySelector('.image-history');
+        
+        // Store history of generated images
+        const history = [];
+        const maxHistory = 8;
+        
+        // Placeholder images for different styles
+        const stylePlaceholders = {
+            'photorealistic': ['/api/placeholder/768/768', '/api/placeholder/768/768'],
+            'digital-art': ['/api/placeholder/768/768', '/api/placeholder/768/768'],
+            'painting': ['/api/placeholder/768/768', '/api/placeholder/768/768'],
+            'sketch': ['/api/placeholder/768/768', '/api/placeholder/768/768'],
+            'anime': ['/api/placeholder/768/768', '/api/placeholder/768/768'],
+            'pixel-art': ['/api/placeholder/768/768', '/api/placeholder/768/768']
+        };
+        
+        // Generate image function (simulated)
+        function generateImage() {
+            const prompt = promptInput.value.trim();
+            
+            if (!prompt) {
+                alert('Please enter a prompt first!');
+                return;
+            }
+            
+            const style = styleSelect.value;
+            const size = sizeSelect.value;
+            
+            // Show loading spinner
+            loading.style.display = 'flex';
+            placeholderText.style.display = 'none';
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Get a placeholder image based on the selected style
+                const styleImages = stylePlaceholders[style];
+                const randomIndex = Math.floor(Math.random() * styleImages.length);
+                const imageUrl = styleImages[randomIndex];
+                
+                // Update image
+                generatedImage.src = imageUrl;
+                generatedImage.style.display = 'block';
+                
+                // Hide loading spinner
+                loading.style.display = 'none';
+                
+                // Add to history
+                addToHistory(imageUrl, prompt);
+                
+            }, 2000); // Simulate 2 second delay
+        }
+        
+        // Add image to history
+        function addToHistory(imageUrl, prompt) {
+            // Create history item
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+            
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.alt = prompt;
+            
+            const promptText = document.createElement('div');
+            promptText.className = 'prompt-text';
+            promptText.textContent = prompt;
+            
+            historyItem.appendChild(img);
+            historyItem.appendChild(promptText);
+            
+            // Add click event to load this image
+            historyItem.addEventListener('click', () => {
+                generatedImage.src = imageUrl;
+                generatedImage.style.display = 'block';
+                placeholderText.style.display = 'none';
+                promptInput.value = prompt;
+            });
+            
+            // Add to history array and DOM
+            history.unshift({ imageUrl, prompt });
+            imageHistory.prepend(historyItem);
+            
+            // Limit history size
+            if (history.length > maxHistory) {
+                history.pop();
+                if (imageHistory.children.length > maxHistory) {
+                    imageHistory.removeChild(imageHistory.lastChild);
+                }
+            }
+        }
+        
+        // Clear function
+        function clearAll() {
+            promptInput.value = '';
+            generatedImage.style.display = 'none';
+            placeholderText.style.display = 'block';
+        }
+        
+        // Event listeners
+        generateBtn.addEventListener('click', generateImage);
+        clearBtn.addEventListener('click', clearAll);
+        
+        // Allow generating by pressing Enter in textarea
+        promptInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                generateImage();
+            }
         });
-
-        // Toggle typing indicator (just for demo)
-        setTimeout(() => {
-            document.querySelector('.typing-indicator').style.display = 'none';
-        }, 3000);
     </script>
 </body>
 </html>
