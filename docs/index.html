@@ -10,71 +10,60 @@
     }
     body {
       margin: 0;
-      background: linear-gradient(to bottom, #87CEEB, #d0f4f9);
-      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #89CFF0, #d0f4f9);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
       overflow: hidden;
-      position: relative;
+      text-align: center;
+    }
+    h1, #startText, #score {
+      background-color: rgba(255, 255, 255, 0.7);
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px auto;
+      border-radius: 15px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
     }
     h1 {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 36px;
-      color: #ffffff;
-      text-shadow: 2px 2px 4px #000;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 10px;
-      border-radius: 10px;
-      display: inline-block;
+      font-size: 40px;
+      color: #FF4081;
+    }
+    #startText {
+      font-size: 22px;
+      color: #333;
     }
     #score {
       position: absolute;
       top: 10px;
       left: 10px;
-      font-size: 24px;
+      font-size: 22px;
       font-weight: bold;
-      color: white;
-      text-shadow: 1px 1px 2px black;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 5px 10px;
-      border-radius: 10px;
-      z-index: 10;
+      color: #333;
     }
     canvas {
       display: block;
       margin: 20px auto;
       background: transparent;
       border: 2px solid #000;
-      border-radius: 10px;
-    }
-    #startText {
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
-      color: white;
-      text-shadow: 1px 1px 2px black;
-      margin-top: 5px;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 10px;
-      border-radius: 10px;
-      display: inline-block;
+      border-radius: 12px;
     }
 
-    /* Floating emoji animation */
+    /* Animated emoji background */
     .emoji {
       position: absolute;
-      font-size: 40px;
+      font-size: 45px;
       animation: floatUp linear infinite;
       pointer-events: none;
-      opacity: 0.8;
+      opacity: 0.9;
+      z-index: 0;
     }
 
     @keyframes floatUp {
       0% {
         transform: translateY(100vh) scale(1);
-        opacity: 0.8;
+        opacity: 0.9;
       }
       100% {
-        transform: translateY(-10vh) scale(1.5);
+        transform: translateY(-10vh) scale(1.4);
         opacity: 0;
       }
     }
@@ -84,28 +73,22 @@
   <h1>Dinh Flapper</h1>
   <div id="score">Score: 0</div>
   <canvas id="gameCanvas" width="400" height="600"></canvas>
-  <div id="startText">Tap here to start</div>
+  <div id="startText">Tap to Start</div>
 
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
     const startText = document.getElementById("startText");
 
-    // Load images
-    const birdImg = new Image();
-    birdImg.src = "bird.png"; // Replace with your bird image path
-
-    const grassImg = new Image();
-    grassImg.src = "grass.png"; // Replace with your grass texture path
-
     const bird = {
       x: 80,
       y: 200,
-      width: 40,
-      height: 40,
+      width: 30,
+      height: 30,
       velocity: 0,
       gravity: 0.6,
-      lift: -10
+      lift: -10,
+      color: "#FF5733"
     };
 
     let pipes = [];
@@ -115,22 +98,21 @@
     let gameStarted = false;
 
     function drawBird() {
-      ctx.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+      ctx.fillStyle = bird.color;
+      ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
     }
 
     function drawPipes() {
+      ctx.fillStyle = "#32CD32";
       pipes.forEach(pipe => {
-        // Top pipe
-        ctx.drawImage(grassImg, pipe.x, 0, pipe.width, pipe.top);
-        // Bottom pipe
-        ctx.drawImage(grassImg, pipe.x, canvas.height - pipe.bottom, pipe.width, pipe.bottom);
+        ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
+        ctx.fillRect(pipe.x, canvas.height - pipe.bottom, pipe.width, pipe.bottom);
       });
     }
 
     function updateBird() {
       bird.velocity += bird.gravity;
       bird.y += bird.velocity;
-
       if (bird.y + bird.height > canvas.height || bird.y < 0) {
         endGame();
       }
@@ -206,25 +188,23 @@
       bird.velocity = bird.lift;
     }
 
-    // Touch and keyboard support
     canvas.addEventListener("touchstart", flap);
     document.body.addEventListener("touchstart", flap);
     document.addEventListener("keydown", flap);
 
     // Animated emojis
-    const emojis = ["😊", "😄", "🥳", "😎", "😉", "🤩"];
+    const emojis = ["😄", "🎉", "✨", "🌟", "🕹️", "💥"];
     function createEmoji() {
       const emoji = document.createElement("div");
       emoji.classList.add("emoji");
       emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       emoji.style.left = Math.random() * window.innerWidth + "px";
-      emoji.style.animationDuration = (3 + Math.random() * 2) + "s";
-      emoji.style.fontSize = (30 + Math.random() * 20) + "px";
+      emoji.style.animationDuration = (2 + Math.random() * 2) + "s";
+      emoji.style.fontSize = (40 + Math.random() * 10) + "px";
       document.body.appendChild(emoji);
-
       setTimeout(() => emoji.remove(), 5000);
     }
-    setInterval(createEmoji, 500);
+    setInterval(createEmoji, 400);
   </script>
 </body>
 </html>
