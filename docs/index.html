@@ -21,6 +21,10 @@
       font-size: 36px;
       color: #ffffff;
       text-shadow: 2px 2px 4px #000;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 10px;
+      display: inline-block;
     }
     #score {
       position: absolute;
@@ -30,6 +34,9 @@
       font-weight: bold;
       color: white;
       text-shadow: 1px 1px 2px black;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 5px 10px;
+      border-radius: 10px;
       z-index: 10;
     }
     canvas {
@@ -46,12 +53,16 @@
       color: white;
       text-shadow: 1px 1px 2px black;
       margin-top: 5px;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 10px;
+      display: inline-block;
     }
 
     /* Floating emoji animation */
     .emoji {
       position: absolute;
-      font-size: 30px;
+      font-size: 40px;
       animation: floatUp linear infinite;
       pointer-events: none;
       opacity: 0.8;
@@ -80,15 +91,21 @@
     const ctx = canvas.getContext("2d");
     const startText = document.getElementById("startText");
 
+    // Load images
+    const birdImg = new Image();
+    birdImg.src = "bird.png"; // Replace with your bird image path
+
+    const grassImg = new Image();
+    grassImg.src = "grass.png"; // Replace with your grass texture path
+
     const bird = {
       x: 80,
       y: 200,
-      width: 30,
-      height: 30,
+      width: 40,
+      height: 40,
       velocity: 0,
       gravity: 0.6,
-      lift: -10,
-      color: "red"
+      lift: -10
     };
 
     let pipes = [];
@@ -98,43 +115,17 @@
     let gameStarted = false;
 
     function drawBird() {
-      ctx.fillStyle = bird.color;
-      ctx.beginPath();
-      ctx.arc(bird.x + bird.width / 2, bird.y + bird.height / 2, bird.width / 2, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
     }
 
     function drawPipes() {
-      ctx.fillStyle = "green";
       pipes.forEach(pipe => {
-        // top pipe
-        ctx.beginPath();
-        ctx.roundRect(pipe.x, 0, pipe.width, pipe.top, [10]);
-        ctx.fill();
-        // bottom pipe
-        ctx.beginPath();
-        ctx.roundRect(pipe.x, canvas.height - pipe.bottom, pipe.width, pipe.bottom, [10]);
-        ctx.fill();
+        // Top pipe
+        ctx.drawImage(grassImg, pipe.x, 0, pipe.width, pipe.top);
+        // Bottom pipe
+        ctx.drawImage(grassImg, pipe.x, canvas.height - pipe.bottom, pipe.width, pipe.bottom);
       });
     }
-
-    // Add canvas roundRect for better visuals
-    CanvasRenderingContext2D.prototype.roundRect = function (x, y, width, height, radius) {
-      if (typeof radius === 'number') {
-        radius = [radius];
-      }
-      this.beginPath();
-      this.moveTo(x + radius[0], y);
-      this.lineTo(x + width - radius[0], y);
-      this.quadraticCurveTo(x + width, y, x + width, y + radius[0]);
-      this.lineTo(x + width, y + height - radius[0]);
-      this.quadraticCurveTo(x + width, y + height, x + width - radius[0], y + height);
-      this.lineTo(x + radius[0], y + height);
-      this.quadraticCurveTo(x, y + height, x, y + height - radius[0]);
-      this.lineTo(x, y + radius[0]);
-      this.quadraticCurveTo(x, y, x + radius[0], y);
-      this.closePath();
-    };
 
     function updateBird() {
       bird.velocity += bird.gravity;
@@ -182,8 +173,8 @@
 
         if (!pipe.passed && pipe.x + pipe.width < bird.x) {
           score++;
-          pipe.passed = true;
           document.getElementById("score").innerText = "Score: " + score;
+          pipe.passed = true;
         }
       });
     }
@@ -227,13 +218,13 @@
       emoji.classList.add("emoji");
       emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       emoji.style.left = Math.random() * window.innerWidth + "px";
-      emoji.style.animationDuration = (4 + Math.random() * 3) + "s";
-      emoji.style.fontSize = (20 + Math.random() * 20) + "px";
+      emoji.style.animationDuration = (3 + Math.random() * 2) + "s";
+      emoji.style.fontSize = (30 + Math.random() * 20) + "px";
       document.body.appendChild(emoji);
 
-      setTimeout(() => emoji.remove(), 7000);
+      setTimeout(() => emoji.remove(), 5000);
     }
-    setInterval(createEmoji, 800);
+    setInterval(createEmoji, 500);
   </script>
 </body>
 </html>
