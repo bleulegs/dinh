@@ -85,8 +85,8 @@
       width: 30,
       height: 30,
       velocity: 0,
-      gravity: 1.0,   // Faster drop
-      lift: -7,       // Lower jump
+      gravity: 1.0,   // fast fall
+      lift: -10,      // restored original jump height
       color: "#FF5733"
     };
 
@@ -119,7 +119,7 @@
 
     function updatePipes() {
       pipes.forEach(pipe => {
-        pipe.x -= 3; // Faster pipe movement
+        pipe.x -= 3; // fast pipe movement
       });
 
       if (frame % 100 === 0) {
