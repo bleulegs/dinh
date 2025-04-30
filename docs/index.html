@@ -47,7 +47,6 @@
       border-radius: 12px;
     }
 
-    /* Animated emoji background */
     .emoji {
       position: absolute;
       font-size: 45px;
@@ -86,8 +85,8 @@
       width: 30,
       height: 30,
       velocity: 0,
-      gravity: 0.6,
-      lift: -10,
+      gravity: 1.0,   // Faster drop
+      lift: -7,       // Lower jump
       color: "#FF5733"
     };
 
@@ -120,7 +119,7 @@
 
     function updatePipes() {
       pipes.forEach(pipe => {
-        pipe.x -= 2;
+        pipe.x -= 3; // Faster pipe movement
       });
 
       if (frame % 100 === 0) {
@@ -192,7 +191,7 @@
     document.body.addEventListener("touchstart", flap);
     document.addEventListener("keydown", flap);
 
-    // Animated emojis
+    // Floating emojis
     const emojis = ["😄", "🎉", "✨", "🌟", "🕹️", "💥"];
     function createEmoji() {
       const emoji = document.createElement("div");
