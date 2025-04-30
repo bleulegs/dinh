@@ -135,9 +135,16 @@
       requestAnimationFrame(draw);
     }
 
-    document.addEventListener("keydown", () => {
+    function flap() {
       bird.velocity = bird.lift;
-    });
+    }
+
+    // Touch support
+    canvas.addEventListener("touchstart", flap);
+    // Also support tap anywhere on screen
+    document.body.addEventListener("touchstart", flap);
+    // Keyboard fallback
+    document.addEventListener("keydown", flap);
 
     draw();
   </script>
